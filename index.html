@@ -1,0 +1,65 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src="node_modules/howler/dist/howler.min.js"></script>
+    <script src="scheduler.js"></script>
+    <script src='main.js'></script>
+
+    <script>
+        var timeline = {
+    beats: 4,
+    tempo: 120, 
+    duration: 3*60*1000,
+    sounds: [
+    {
+        sec: 0, // milliseconds 
+        name: 'bensound-summer.mp3',
+        loop: 15,
+        volume: 0.7,
+        mute: false, 
+    },
+    {
+        sec: 4,
+        name: 'bensound-creativeminds.mp3'
+    },
+
+    
+    {
+        sec: 2, 
+        name: 'bensound-ukulele.mp3',
+        loop: 15,
+        volume: 0.7,
+        mute: false, 
+    },
+    ]
+ }
+
+ const scheduler = new Scheduler();
+ setInterval(() => {
+    console.log(scheduler.currentPosition());
+ }, 1000);
+ setup(timeline);
+    </script>
+</head>
+<body>
+    <h1>scheduler test</h1>
+    <button onclick="scheduler.seek(-3, seekAt(-3))">-3 sec</button>
+    <button onclick="scheduler.stop(stop)">stop</button>
+    <button onclick="scheduler.pause(pause)">pause</button>
+    <BUTTON onclick="scheduler.start(play)">PLAY</BUTTON>
+    <button onclick="scheduler.seek(3, seekAt(3))">+3 sec</button>
+    <h1>music test</h1>
+    <button onclick="stop()">stop</button>
+    <button onclick="pause()">pause</button>
+    <BUTTON onclick="play()">PLAY</BUTTON>    
+    <input type="text" id="seekTime" value="0"> seconds
+    <button onclick="seekAt(document.getElementById(+seekTime))">Seek</button>
+    <script>
+    </script>
+</body>
+</html>

@@ -1,6 +1,11 @@
 import * as Scheduler from './scheduler';
 import * as HowlManager from './howlmanager';
 
+HowlManager.setTimerFunction(Scheduler.currentPosition);
+
+export const setup = HowlManager.setup;
+export const currentPosition = Scheduler.currentPosition;
+
 export function play() {
     Scheduler.start();
     HowlManager.play();
@@ -18,5 +23,5 @@ export function pause() {
 
 export function seek(second) {
     Scheduler.seek(second);
-    //TODO howl ?
+    HowlManager.seekAt(second);
 }

@@ -3,16 +3,16 @@ import { Howl } from 'howler';
 const howls = {};
 let timeline;
 const timeouts = [];
-let startTime = 0;
-let pauseTime = 0;
-let elapsedTimeFromStart = 0;
+let currentPosition = null;
+let pauseTime = null;
+let playing = false;
 
 function onLoad(sound) {
   sound.duration = howls[sound.name].duration();
 }
 
 export function setup(_timeline) {
-  this.timeline = _timeline;
+  timeline = _timeline;
   for (const sound of timeline.sounds) {
     howls[sound.name] = new Howl({
       src: [sound.name],
@@ -23,47 +23,79 @@ export function setup(_timeline) {
 }
 
 export function play() {
-  seekAt(0);
+  if (pauseTime) {
+    seekAt(pauseTime);
+  } else {
+    seekAt(0);
+    pauseTime = 0;
+  }
+  
+  for (const sound of timeline.sounds) {
+    if (sound.sec <= pauseTime) {
+      if (sound.sec + sound.duration > pauseTime) {
+        console.log('starting: ', sound.name, ' from sec: ', pauseTime - sound.sec);
+        howls[sound.name].seek(pauseTime - sound.sec);
+        howls[sound.name].play();
+      }
+    }
+    if (sound.sec > pauseTime) {
+      const timeout = setTimeout((sound) => {
+        console.log('starting: ', sound.name);
+        howls[sound.name].seek(0);
+        howls[sound.name].play();
+      }, Math.max(sound.sec * 1000 - pauseTime * 1000, 0), sound);
+      timeouts.push(timeout);
+    }
+  }
+  playing = true;
 }
 
 export function stop() {
   console.log('stop');
-  startTime = 0;
-  pauseTime = 0;
   for (const sound of timeline.sounds) {
     howls[sound.name].stop();
-    howls[sound.name].load();
   }
   for (const timeout of timeouts) {
     clearTimeout(timeout);
   }
+  pauseTime = 0;
+  playing = false;
 }
 
 export function pause() {
   console.log('pause');
-  pauseTime = new Date().getTime();
   stop();
-  elapsedTimeFromStart = pauseTime - startTime;
-  console.log(elapsedTimeFromStart);
+  pauseTime = currentPosition();
+  playing = false;
 }
 
 export function seekAt(seconds) {
-  this.stop();
+  const savePlaying = playing; 
+  if (playing) {
+    stop();
+  }
+  pauseTime = seconds;
   for (const sound of timeline.sounds) {
     if (sound.sec <= seconds) {
       if (sound.sec + sound.duration > seconds) {
         console.log('starting: ', sound.name, ' from sec: ', seconds - sound.sec);
         howls[sound.name].seek(seconds - sound.sec);
-        howls[sound.name].play();
       }
     }
     if (sound.sec > seconds) {
       const timeout = setTimeout((sound) => {
         console.log('starting: ', sound.name);
         howls[sound.name].seek(0);
-        howls[sound.name].play();
       }, Math.max(sound.sec * 1000 - seconds * 1000, 0), sound);
       timeouts.push(timeout);
     }
   }
+  if (savePlaying) {
+    play();
+  }
+}
+
+
+export function setTimerFunction(fun) {
+  currentPosition = fun;
 }

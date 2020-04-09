@@ -6,9 +6,7 @@
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src="node_modules/howler/dist/howler.min.js"></script>
-    <script src="scheduler.js"></script>
-    <script src='main.js'></script>
+    <script src="/dist/main.js"></script>
 
     <script>
         var timeline = {
@@ -39,11 +37,10 @@
     ]
  }
 
- const scheduler = new Scheduler();
  setInterval(() => {
-    console.log(scheduler.currentPosition());
+    console.log(SoundManager.currentPosition());
  }, 1000);
- setup(timeline);
+ SoundManager.setup(timeline);
     </script>
 </head>
 <body>
@@ -54,11 +51,11 @@
     <BUTTON onclick="scheduler.start(play)">PLAY</BUTTON>
     <button onclick="scheduler.seek(3, seekAt(3))">+3 sec</button>
     <h1>music test</h1>
-    <button onclick="stop()">stop</button>
-    <button onclick="pause()">pause</button>
-    <BUTTON onclick="play()">PLAY</BUTTON>    
+    <button onclick="SoundManager.stop()">stop</button>
+    <button onclick="SoundManager.pause()">pause</button>
+    <BUTTON onclick="SoundManager.play()">PLAY</BUTTON>    
     <input type="text" id="seekTime" value="0"> seconds
-    <button onclick="seekAt(document.getElementById(+seekTime))">Seek</button>
+    <button onclick="SoundManager.seek(+document.getElementById('seekTime').value)">Seek</button>
     <script>
     </script>
 </body>

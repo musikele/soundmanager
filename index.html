@@ -1,5 +1,6 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -9,54 +10,50 @@
     <script src="/dist/main.js"></script>
 
     <script>
-        var timeline = {
+var timeline = {
     beats: 4,
-    tempo: 120, 
-    duration: 3*60*1000,
+    tempo: 120,
+    duration: 3 * 60 * 1000,
     sounds: [
-    {
-        sec: 0, // milliseconds 
-        name: 'bensound-summer.mp3',
-        loop: 15,
-        volume: 0.7,
-        mute: false, 
-    },
-    {
-        sec: 4,
-        name: 'bensound-creativeminds.mp3'
-    },
+        {
+            sec: 0, // milliseconds 
+            name: 'bensound-summer.mp3',
+            loop: 15,
+            volume: 0.7,
+            mute: false,
+        },
+        {
+            sec: 4,
+            name: 'bensound-creativeminds.mp3'
+        },
 
-    
-    {
-        sec: 2, 
-        name: 'bensound-ukulele.mp3',
-        loop: 15,
-        volume: 0.7,
-        mute: false, 
-    },
+
+        {
+            sec: 2,
+            name: 'bensound-ukulele.mp3',
+            loop: 15,
+            volume: 0.7,
+            mute: false,
+        },
     ]
- }
+}
 
- setInterval(() => {
-    console.log(SoundManager.currentPosition());
- }, 1000);
- SoundManager.setup(timeline);
+        setInterval(() => {
+            console.log(SoundManager.currentPosition());
+        }, 1000);
+        SoundManager.setup(timeline);
     </script>
 </head>
+
 <body>
-    <h1>scheduler test</h1>
-    <button onclick="scheduler.seek(-3, seekAt(-3))">-3 sec</button>
-    <button onclick="scheduler.stop(stop)">stop</button>
-    <button onclick="scheduler.pause(pause)">pause</button>
-    <BUTTON onclick="scheduler.start(play)">PLAY</BUTTON>
-    <button onclick="scheduler.seek(3, seekAt(3))">+3 sec</button>
     <h1>music test</h1>
     <button onclick="SoundManager.stop()">stop</button>
     <button onclick="SoundManager.pause()">pause</button>
-    <BUTTON onclick="SoundManager.play()">PLAY</BUTTON>    
+    <BUTTON onclick="SoundManager.play()">PLAY</BUTTON>
     <input type="text" id="seekTime" value="0"> seconds
     <button onclick="SoundManager.seek(+document.getElementById('seekTime').value)">Seek</button>
     <script>
     </script>
 </body>
+
 </html>

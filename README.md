@@ -42,33 +42,45 @@ and pass to SoundManager:
 SoundManager.setup(timeline);
 ```
 
-Once this is done, you can control the music via the API that is provided 
+Once this is done, you can control the music via the API that is provided.
 
-## API 
+## Example? 
 
-## SoundManager.setup(timeline) 
+```
+# npm i -g static-server 
+# npm i 
+# npm run build 
+# static-server (will start a server on port 9080) 
+```
+then, open browser to http://localhost:9080. 
 
-will set up all the internals to play music. 
+## API
 
-## SoundManager.currentPosition()
+### SoundManager.setup(timeline)
+
+will set up all the internals to play music.
+
+### SoundManager.currentPosition()
 
 returns the position we are in the music, in seconds. 
 
-## SoundManager.play() 
+### SoundManager.play() 
 
 plays the music from the given pointer - if none is set, it will start from the start. 
 To set the pointer check method `seek`. 
 
-## SoundManager.stop()
+### SoundManager.stop()
 
 stops the music and resets the pointers to the start of the timeline.
 
-## SoundManager.pause() 
+### SoundManager.pause() 
 
 Will pause the music. The pointers will be saved at the current second. 
 
-## SoundManager.seek(sec) 
+### SoundManager.seek(sec) 
 
 Will move the pointers to the given second. 
 You can call this method either when the music is paused or when it's playing. 
+
+
 

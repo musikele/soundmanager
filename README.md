@@ -21,6 +21,8 @@ var timeline = {
         {
             sec: 0, // seconds 
             name: 'bensound-summer.mp3',
+            start: 5, // starts to play from the 5th second
+            length: 2 // plays only for two seconds 
         },
         {
             sec: 4,
@@ -30,11 +32,13 @@ var timeline = {
 
         {
             sec: 2,
-            name: 'bensound-ukulele.mp3',
+            name: 'bensound-ukulele.mp3'
         },
     ]
 }
 ```
+
+> Important: if you use the option `start`, you **must** use also `length`. 
 
 and pass to SoundManager: 
 

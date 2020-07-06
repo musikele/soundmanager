@@ -7,7 +7,7 @@
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src="/dist/main.js"></script>
+    <script src="/dist/soundmanager.js"></script>
 
     <script>
 var timeline = {
@@ -16,24 +16,27 @@ var timeline = {
     duration: 3 * 60 * 1000,
     sounds: [
         {
-            sec: 0, // milliseconds 
+            sec: 0, 
             name: 'bensound-summer.mp3',
-            loop: 15,
             volume: 0.7,
             mute: false,
+            // start && length are used to calculate the offset
+            start: 5, 
+            length: 3
         },
         {
-            sec: 4,
-            name: 'bensound-creativeminds.mp3'
+            sec: 3,
+            name: 'bensound-creativeminds.mp3',
+            start: 3,
+            length: 3
         },
-
-
         {
-            sec: 2,
+            sec: 6,
             name: 'bensound-ukulele.mp3',
-            loop: 15,
             volume: 0.7,
             mute: false,
+            start: 6,
+            length: 3
         },
     ]
 }

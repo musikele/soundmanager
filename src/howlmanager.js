@@ -9,15 +9,22 @@ let playing = false;
 
 function onLoad(sound) {
   sound.duration = howls[sound.name].duration();
+  if (!sound.length || sound.length > sound.duration) {
+    sound.length = sound.duration - sound.start;
+  }
 }
 
 export function setup(_timeline) {
   timeline = _timeline;
   for (const sound of timeline.sounds) {
+    let needsSprite = sound.start && sound
     howls[sound.name] = new Howl({
       src: [sound.name],
       preload: true,
       onload: onLoad.bind(null, sound),
+      sprite: needsSprite ? {
+        __default: [Math.floor(sound.start*1000), Math.floor(sound.length*1000)]
+      } : undefined
     });
   }
 }

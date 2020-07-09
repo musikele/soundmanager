@@ -1,4 +1,4 @@
-import { Howl } from 'howler';
+import { Howl, Howler } from 'howler';
 
 const howls = {};
 let timeline;
@@ -23,7 +23,8 @@ function onLoad(sound, resolve) {
 }
 
 export function setup(_timeline) {
-  let failed = false; 
+  Howler.unload();
+  let failed = false;
   return new Promise((resolve, reject) => {
     timeline = _timeline;
       for (const sound of timeline.sounds) {

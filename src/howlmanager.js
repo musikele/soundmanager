@@ -6,27 +6,48 @@ const timeouts = [];
 let currentPosition = null;
 let pauseTime = null;
 let playing = false;
+let loadedSounds = 0;
 
-function onLoad(sound) {
+function onLoad(sound, resolve) {
   sound.duration = howls[sound.name].duration();
+  if (sound.length !== undefined) {
+    sound.duration = sound.length;
+  }
   if (!sound.length || sound.length > sound.duration) {
     sound.length = sound.duration - sound.start;
+  }
+  loadedSounds++; 
+  if (timeline.sounds.length === loadedSounds) {
+    resolve();
   }
 }
 
 export function setup(_timeline) {
-  timeline = _timeline;
-  for (const sound of timeline.sounds) {
-    let needsSprite = sound.start && sound
-    howls[sound.name] = new Howl({
-      src: [sound.name],
-      preload: true,
-      onload: onLoad.bind(null, sound),
-      sprite: needsSprite ? {
-        __default: [Math.floor(sound.start*1000), Math.floor(sound.length*1000)]
-      } : undefined
-    });
-  }
+  let failed = false; 
+  return new Promise((resolve, reject) => {
+    timeline = _timeline;
+      for (const sound of timeline.sounds) {
+        let needsSprite = sound.start !== undefined && sound.length !== undefined;
+        howls[sound.name] = new Howl({
+          src: [sound.name],
+          preload: true,
+          onload: onLoad.bind(null, sound, resolve),
+          onloaderror: () => {
+            failed = true;
+            reject(); 
+          },
+          sprite: needsSprite ? {
+            __default: [Math.floor(sound.start*1000), Math.floor(sound.length*1000)]
+          } : undefined
+        });
+      }
+
+      if (failed) {
+        for (const sound of timeline.sounds) {
+          howls[sound.name].unload();
+        }
+      }
+  }); 
 }
 
 export function play() {

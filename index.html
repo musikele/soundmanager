@@ -10,41 +10,32 @@
     <script src="/dist/soundmanager.js"></script>
 
     <script>
-var timeline = {
-    beats: 4,
-    tempo: 120,
-    duration: 3 * 60 * 1000,
-    sounds: [
-        {
-            sec: 0, 
-            name: 'bensound-summer.mp3',
-            volume: 0.7,
-            mute: false,
-            // start && length are used to calculate the offset
-            start: 5, 
-            length: 3
-        },
-        {
-            sec: 3,
-            name: 'bensound-creativeminds.mp3',
-            start: 3,
-            length: 3
-        },
-        {
-            sec: 6,
-            name: 'bensound-ukulele.mp3',
-            volume: 0.7,
-            mute: false,
-            start: 6,
-            length: 3
-        },
-    ]
-}
+        var timeline = { 
+            "beats": 4, 
+            "tempo": 120, 
+            "duration": 180000,
+            "sounds": [
+                { 
+                    "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/raggaeton/GUITAR+1A.wav", 
+                    "sec": 0, 
+                    "start": 0, 
+                    "length": 6.1 
+                }, 
+                { 
+                    "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/raggaeton/GUITAR+1A.wav", 
+                    "sec": 6.45, 
+                    "start": 6.1, 
+                    "length": 4.011837 
+                }
+            ] 
+        }
 
         setInterval(() => {
             console.log(SoundManager.currentPosition());
         }, 1000);
-        SoundManager.setup(timeline);
+        SoundManager.setup(timeline).then(function () {
+            console.log('song loaded');
+        });
     </script>
 </head>
 

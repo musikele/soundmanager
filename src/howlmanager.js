@@ -9,7 +9,7 @@ let playing = false;
 let loadedSounds = 0;
 
 function onLoad(sound, resolve) {
-  sound.duration = howls[sound.name].duration();
+  sound.duration = howls[sound.id].duration();
   if (sound.length !== undefined) {
     sound.duration = sound.length;
   }
@@ -27,9 +27,11 @@ export function setup(_timeline) {
   let failed = false;
   return new Promise((resolve, reject) => {
     timeline = _timeline;
+    let id = 1; 
       for (const sound of timeline.sounds) {
         let needsSprite = sound.start !== undefined && sound.length !== undefined;
-        howls[sound.name] = new Howl({
+        sound.id = id;
+        howls[id] = new Howl({
           src: [sound.name],
           preload: true,
           onload: onLoad.bind(null, sound, resolve),
@@ -41,11 +43,12 @@ export function setup(_timeline) {
             __default: [Math.floor(sound.start*1000), Math.floor(sound.length*1000)]
           } : undefined
         });
+        id++;
       }
 
       if (failed) {
         for (const sound of timeline.sounds) {
-          howls[sound.name].unload();
+          howls[sound.id].unload();
         }
       }
   }); 
@@ -62,18 +65,19 @@ export function play() {
   for (const sound of timeline.sounds) {
     if (sound.sec <= pauseTime) {
       if (sound.sec + sound.duration > pauseTime) {
-        console.log('starting: ', sound.name, ' from sec: ', pauseTime - sound.sec);
-        howls[sound.name].seek(pauseTime - sound.sec);
-        howls[sound.name].play();
+        howls[sound.id].seek(pauseTime - sound.sec);
+        howls[sound.id].play();
+        continue;
       }
     }
     if (sound.sec > pauseTime) {
       const timeout = setTimeout((sound) => {
         console.log('starting: ', sound.name);
-        howls[sound.name].seek(0);
-        howls[sound.name].play();
+        howls[sound.id].seek(0);
+        howls[sound.id].play();
       }, Math.max(sound.sec * 1000 - pauseTime * 1000, 0), sound);
       timeouts.push(timeout);
+      continue;
     }
   }
   playing = true;
@@ -82,7 +86,7 @@ export function play() {
 export function stop() {
   console.log('stop');
   for (const sound of timeline.sounds) {
-    howls[sound.name].stop();
+    howls[sound.id].stop();
   }
   for (const timeout of timeouts) {
     clearTimeout(timeout);
@@ -107,14 +111,12 @@ export function seekAt(seconds) {
   for (const sound of timeline.sounds) {
     if (sound.sec <= seconds) {
       if (sound.sec + sound.duration > seconds) {
-        console.log('starting: ', sound.name, ' from sec: ', seconds - sound.sec);
-        howls[sound.name].seek(seconds - sound.sec);
+        howls[sound.id].seek(seconds - sound.sec);
       }
     }
     if (sound.sec > seconds) {
       const timeout = setTimeout((sound) => {
-        console.log('starting: ', sound.name);
-        howls[sound.name].seek(0);
+        howls[sound.id].seek(0);
       }, Math.max(sound.sec * 1000 - seconds * 1000, 0), sound);
       timeouts.push(timeout);
     }

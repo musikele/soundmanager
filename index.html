@@ -10,24 +10,19 @@
     <script src="/dist/soundmanager.js"></script>
 
     <script>
-        var timeline = { 
-            "beats": 4, 
-            "tempo": 120, 
+        var timeline = {
+            "beats": 4,
+            "tempo": 120,
             "duration": 180000,
-            "sounds": [
-                { 
-                    "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/raggaeton/GUITAR+1A.wav", 
-                    "sec": 0, 
-                    "start": 0, 
-                    "length": 6.1 
-                }, 
-                { 
-                    "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/raggaeton/GUITAR+1A.wav", 
-                    "sec": 6.45, 
-                    "start": 6.1, 
-                    "length": 4.011837 
-                }
-            ] 
+            "sounds": [{ 
+                "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/sounds/HH+1.wav", 
+                "sec": 0, 
+                "volume": 0.1
+            }, {
+                "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/raggaeton/GUITAR+1A.wav", 
+                "sec": 0, 
+                "volume": 1 
+            }]
         }
 
         setInterval(() => {

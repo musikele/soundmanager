@@ -29,10 +29,12 @@ export function setup(_timeline) {
     timeline = _timeline;
     let id = 1; 
       for (const sound of timeline.sounds) {
-        let needsSprite = sound.start !== undefined && sound.length !== undefined;
+        let start, length, name, sec, remainingProperties;
+        ({start, length, name, sec, ...remainingProperties} = sound); 
+        let needsSprite = start !== undefined && length !== undefined;
         sound.id = id;
         howls[id] = new Howl({
-          src: [sound.name],
+          src: [name],
           preload: true,
           onload: onLoad.bind(null, sound, resolve),
           onloaderror: () => {
@@ -41,7 +43,8 @@ export function setup(_timeline) {
           },
           sprite: needsSprite ? {
             __default: [Math.floor(sound.start*1000), Math.floor(sound.length*1000)]
-          } : undefined
+          } : undefined,
+          ...remainingProperties
         });
         id++;
       }

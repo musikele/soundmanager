@@ -1,4 +1,5 @@
 import { Howl, Howler } from 'howler';
+import { log } from './logger';
 
 const howls = {};
 let timeline;
@@ -19,6 +20,7 @@ function onLoad(sound, resolve) {
   loadedSounds++; 
   if (timeline.sounds.length === loadedSounds) {
     resolve();
+    log(`loaded ${timeline.sounds.length} sounds in timeline`);
   }
 }
 
@@ -26,6 +28,7 @@ export function setup(_timeline) {
   Howler.unload();
   loadedSounds = 0;
   let failed = false;
+  log('SETUP - loading sounds...');
   return new Promise((resolve, reject) => {
     timeline = _timeline;
     let id = 1; 
@@ -48,11 +51,14 @@ export function setup(_timeline) {
           } : undefined,
           ...remainingProperties
         });
+        log(`sound: ${sound.name}`);
+        log(sound);
         id++;
       }
 
       if (failed) {
         for (const sound of timeline.sounds) {
+          log('failed to load some sounds!');
           howls[sound.id].unload();
         }
       }
@@ -61,8 +67,10 @@ export function setup(_timeline) {
 
 export function play() {
   if (pauseTime) {
+    log(`PLAY starting - resuming from pause time: ${pauseTime}`);
     seekAt(pauseTime);
   } else {
+    log(`PLAY starting - from the start`);
     seekAt(0);
     pauseTime = 0;
   }
@@ -72,12 +80,13 @@ export function play() {
       if (sound.sec + sound.duration > pauseTime) {
         howls[sound.id].seek(pauseTime - sound.sec);
         howls[sound.id].play();
+        log(`sound with ID ${sound.id} - name ${sound.name} will start playing from ${pauseTime - sound.sec}`);
         continue;
       }
     }
     if (sound.sec > pauseTime) {
       const timeout = setTimeout((sound) => {
-        console.log('starting: ', sound.name);
+        log(`sound with ID ${sound.id} - name ${sound.name} will start playing in ${Math.max(sound.sec * 1000 - pauseTime * 1000, 0)} seconds`);
         howls[sound.id].seek(0);
         howls[sound.id].play();
       }, Math.max(sound.sec * 1000 - pauseTime * 1000, 0), sound);
@@ -89,45 +98,53 @@ export function play() {
 }
 
 export function stop() {
-  console.log('stop');
+  log('STOP called');
   for (const sound of timeline.sounds) {
     howls[sound.id].stop();
+    log('stopped active sounds');
   }
   for (const timeout of timeouts) {
     clearTimeout(timeout);
+    log('stopped all timeouts');
   }
   pauseTime = 0;
   playing = false;
 }
 
 export function pause() {
-  console.log('pause');
+  log('PAUSE called')
   stop();
   pauseTime = currentPosition();
+  log('paused at ' + pauseTime);
   playing = false;
 }
 
 export function seekAt(seconds) {
+  log('SEEK called - moving at sec ' + seconds); 
   const savePlaying = playing; 
   if (playing) {
     stop();
+    log(`we were playing; stopping all sounds`);
   }
   pauseTime = seconds;
   for (const sound of timeline.sounds) {
     if (sound.sec <= seconds) {
       if (sound.sec + sound.duration > seconds) {
         howls[sound.id].seek(seconds - sound.sec);
+        log(`SEEK - moving sound ID=${sound.id} to ${seconds - sound.sec}`);
       }
     }
     if (sound.sec > seconds) {
       const timeout = setTimeout((sound) => {
         howls[sound.id].seek(0);
       }, Math.max(sound.sec * 1000 - seconds * 1000, 0), sound);
+      log('setting seek timeout for file with ID ' + sound.id + ' to ' + Math.max(sound.sec * 1000 - seconds * 1000, 0));
       timeouts.push(timeout);
     }
   }
   if (savePlaying) {
     play();
+    log('we were playing; resuming play')
   }
 }
 
@@ -135,3 +152,4 @@ export function seekAt(seconds) {
 export function setTimerFunction(fun) {
   currentPosition = fun;
 }
+

@@ -1,5 +1,10 @@
 import * as Scheduler from './scheduler';
 import * as HowlManager from './howlmanager';
+import { setDebug } from './logger';
+
+if (document.location.href.includes('soundmanager-debug')) {
+    setDebug(true);
+}
 
 HowlManager.setTimerFunction(Scheduler.currentPosition);
 

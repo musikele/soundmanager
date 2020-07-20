@@ -1,3 +1,5 @@
+import { log, getDebug } from './logger';
+
 let time = 0;
 let interval = null;
 let startTime = 0;
@@ -43,4 +45,10 @@ export function seek(seconds, callback) {
   if (seekTime < 0) seekTime = 0;
   time = seekTime * 1000;
   if (callback) callback();
+}
+
+if (getDebug()) {
+  setTimeout(() => {
+    log('time: ' + currentPosition());
+  }, 1000);
 }

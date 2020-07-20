@@ -24,11 +24,13 @@ function onLoad(sound, resolve) {
 
 export function setup(_timeline) {
   Howler.unload();
+  loadedSounds = 0;
   let failed = false;
   return new Promise((resolve, reject) => {
     timeline = _timeline;
     let id = 1; 
       for (const sound of timeline.sounds) {
+        // eslint-disable-next-line no-unused-vars
         let start, length, name, sec, remainingProperties;
         ({start, length, name, sec, ...remainingProperties} = sound); 
         let needsSprite = start !== undefined && length !== undefined;

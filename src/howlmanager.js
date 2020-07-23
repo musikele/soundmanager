@@ -14,6 +14,9 @@ function onLoad(sound, resolve) {
   if (sound.length !== undefined) {
     sound.duration = sound.length;
   }
+  if (!sound.start) {
+    sound.start = 0
+  } 
   if (!sound.length || sound.length > sound.duration) {
     sound.length = sound.duration - sound.start;
   }

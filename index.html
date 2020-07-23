@@ -10,27 +10,29 @@
     <script src="/dist/soundmanager.js"></script>
 
     <script>
-        var timeline = {
-            "beats": 4,
-            "tempo": 120,
-            "duration": 180000,
+        var timeline = { 
+            "beats": 4, 
+            "tempo": 120, 
+            "duration": 180000, 
             "sounds": [{ 
-                "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/sounds/HH+1.wav", 
+                "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/Raggaeton/GUITAR+1A.wav", 
                 "sec": 0, 
-                "volume": 0.1
-            }, {
-                "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/raggaeton/GUITAR+1A.wav", 
-                "sec": 0, 
-                "volume": 1 
-            }]
+                "volume": 1, 
+                "format": null
+            }] 
         }
 
         setInterval(() => {
             console.log(SoundManager.currentPosition());
         }, 1000);
-        SoundManager.setup(timeline).then(function () {
-            console.log('song loaded');
-        });
+
+
+        const play = function () {
+            SoundManager.setup(timeline).then(function () {
+                console.log('song loaded');
+                SoundManager.play();
+            });
+        }
     </script>
 </head>
 
@@ -38,7 +40,7 @@
     <h1>music test</h1>
     <button onclick="SoundManager.stop()">stop</button>
     <button onclick="SoundManager.pause()">pause</button>
-    <BUTTON onclick="SoundManager.play()">PLAY</BUTTON>
+    <BUTTON onclick="play()">PLAY</BUTTON>
     <input type="text" id="seekTime" value="0"> seconds
     <button onclick="SoundManager.seek(+document.getElementById('seekTime').value)">Seek</button>
     <script>

@@ -40,8 +40,8 @@ export function pause(callback) {
 }
 
 export function seek(seconds, callback) {
-  seekTime = currentPosition();
-  seekTime += seconds;
+  //seekTime = currentPosition();
+  seekTime = seconds;
   if (seekTime < 0) seekTime = 0;
   time = seekTime * 1000;
   if (callback) callback();

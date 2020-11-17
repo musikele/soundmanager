@@ -16,7 +16,8 @@
     "eslint-loader": "^4.0.0",
     "rimraf": "^3.0.2",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "serialize-javascript": ">=3.1.0"
   },
   "scripts": {
     "dev": "webpack --watch",

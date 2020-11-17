@@ -5,19 +5,19 @@
   "main": "dist/soundmanager.js",
   "module": "src/index.js",
   "dependencies": {
-    "howler": "^2.1.3"
+    "howler": "^2.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "babel-loader": "^8.1.0",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.2.1",
     "babel-preset-env": "^1.7.0",
     "eslint": "^6.8.0",
-    "eslint-loader": "^4.0.0",
+    "eslint-loader": "^4.0.2",
     "rimraf": "^3.0.2",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11",
-    "serialize-javascript": ">=3.1.0"
+    "serialize-javascript": ">=3.1.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   },
   "scripts": {
     "dev": "webpack --watch",

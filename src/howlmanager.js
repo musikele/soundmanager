@@ -1,5 +1,6 @@
 import { Howl, Howler } from 'howler';
 import { log } from './logger';
+import { dispatchCustomEvent, EVENTS } from './events.js'
 
 const howls = {};
 let timeline;
@@ -20,9 +21,11 @@ function onLoad(sound, resolve) {
   if (!sound.length || sound.length > sound.duration) {
     sound.length = sound.duration - sound.start;
   }
-  loadedSounds++; 
+  loadedSounds++;
+  dispatchCustomEvent(EVENTS.TRACK_LOADED)
   if (timeline.sounds.length === loadedSounds) {
     resolve();
+    dispatchCustomEvent(EVENTS.LOADING_COMPLETE)
     log(`loaded ${timeline.sounds.length} sounds in timeline`);
   }
 }

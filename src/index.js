@@ -30,3 +30,12 @@ export function seek(second) {
     Scheduler.seek(second);
     HowlManager.seekAt(second);
 }
+
+/**
+ * 
+ * @param {*} volume a number between 0 and 1
+ * @returns true if the volume is set correctly
+ */
+export function setVolume(volume) {
+    return HowlManager.setVolume(volume);
+}

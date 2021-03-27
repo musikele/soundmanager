@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="/dist/soundmanager.js"></script>
 
     <script>
-        var timeline = { 
-            "beats": 4, 
-            "tempo": 120, 
-            "duration": 180000, 
-            "sounds": [{ 
-                "name": "https://proprietary-sounds.s3.eu-central-1.amazonaws.com/Raggaeton/GUITAR+1A.wav", 
-                "sec": 0, 
-                "volume": 1, 
-                "format": null
-            }] 
-        }
+      var timeline = {
+        beats: 4,
+        tempo: 120,
+        duration: 180000,
+        sounds: [
+          {
+            name:
+              'https://proprietary-sounds.s3.eu-central-1.amazonaws.com/Raggaeton/GUITAR+1A.wav',
+            sec: 0,
+            volume: 1,
+            format: null,
+          },
+        ],
+      };
 
-        setInterval(() => {
-            console.log(SoundManager.currentPosition());
-        }, 1000);
+      setInterval(() => {
+        console.log(SoundManager.currentPosition());
+      }, 1000);
 
+      const play = function () {
+        SoundManager.setup(timeline).then(function () {
+          console.log('song loaded');
+          SoundManager.play();
+        });
+      };
 
-        const play = function () {
-            SoundManager.setup(timeline).then(function () {
-                console.log('song loaded');
-                SoundManager.play();
-            });
-        }
+      const setVolume = function () {
+        const newVolume = document.getElementById('volume').value;
+        //console.log('new volume: ', newVolume);
+        SoundManager.setVolume(newVolume);
+      };
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>music test</h1>
     <button onclick="SoundManager.stop()">stop</button>
     <button onclick="SoundManager.pause()">pause</button>
-    <BUTTON onclick="play()">PLAY</BUTTON>
-    <input type="text" id="seekTime" value="0"> seconds
-    <button onclick="SoundManager.seek(+document.getElementById('seekTime').value)">Seek</button>
-    <script>
-    </script>
-</body>
-
+    <button onclick="play()">PLAY</button>
+    <input type="text" id="seekTime" value="0" /> seconds
+    <button
+      onclick="SoundManager.seek(+document.getElementById('seekTime').value)"
+    >
+      Seek
+    </button>
+    <input
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      class="slider"
+      id="volume"
+      oninput="setVolume()"
+    />
+  </body>
 </html>

@@ -159,3 +159,9 @@ export function setTimerFunction(fun) {
   currentPosition = fun;
 }
 
+export function setVolume(volume) {
+  if (typeof volume !== "number") return false;
+  if (volume < 0 || volume > 1) return false;
+  Howler.volume(volume);
+  return true;
+}
